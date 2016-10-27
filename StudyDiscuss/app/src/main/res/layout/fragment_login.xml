@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <com.lchli.studydiscuss.common.widget.CommonTitleView
+        android:id="@+id/common_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/titleView_bgColor" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_portrait"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/default_head"
+        app:civ_border_width="0.5dp"
+        app:civ_border_color="#fff"
+
+        />
+
+    <LinearLayout
+        style="@style/LoginInputLayout"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账号"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/user_account_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="账号"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#000" />
+
+    <LinearLayout
+        style="@style/LoginInputLayout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/user_pwd_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#000" />
+
+    <TextView
+        android:id="@+id/login_widget"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/login_btn_bg"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="登录"
+        android:textColor="#fff"
+        android:textSize="16dp" />
+
+</LinearLayout>

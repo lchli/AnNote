@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">移动笔记</string>
+    <string name="note">笔记</string>
+    <string name="cloud_note">云笔记</string>
+    <string name="user">我的</string>
+    <string name="filter">筛选</string>
+    <string name="sort">排序</string>
+    <string name="insert_image_fail">插入图片失败！</string>
+    <string name="course_type_pattern">[%1$s]</string>
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+    <string name="app_version_pattern">版本:%1$s(作者:%2$s)</string>
+    <string name="account_cannot_null">账号不能为空！</string>
+    <string name="pwd_cannot_null">密码不能为空！</string>
+    <string name="app_no_update">版本已经最新！</string>
+    <string name="update_portrait_success">头像更新成功！</string>
+    <string name="not_login">请先登录！</string>
+    <string name="empty_data">暂无数据！</string>
+    <string name="note_content_cannot_empty">笔记内容不能为空！</string>
+    <string name="note_title_cannot_empty">标题不能为空！</string>
+    <string name="save_note_thumb_fail">保存笔记预览图失败！</string>
+    <string name="photo_album">相册</string>
+    <string name="camera">照相</string>
+    <string name="sort_time_asc">时间升序</string>
+    <string name="sort_time_desc">时间降序</string>
+    <string name="loading_msg">正在加载...</string>
+    <string name="delete_note_confirm_msg">确定删除笔记吗?</string>
+    <string name="delete_note_warn">删除后不可恢复!</string>
+    <string name="delete_note_success">删除成功！</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="upload_note_success">笔记上传成功！</string>
+    <string name="server_error">服务器异常！</string>
+    <string name="patch_restart_process_dialog">已成功应用补丁，需要重启应用程序，现在重启？</string>
+</resources>

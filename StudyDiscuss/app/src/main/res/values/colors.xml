@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="titleView_textcolor">#ffffff</color>
+    <color name="titleView_bgColor">@android:color/holo_blue_bright</color>
+    <color name="list_divider_color">#ccc</color>
+</resources>

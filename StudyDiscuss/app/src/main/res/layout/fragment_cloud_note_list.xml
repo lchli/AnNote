@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.lchli.studydiscuss.common.widget.CommonTitleView
+            android:id="@+id/common_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/titleView_bgColor"
+            />
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/moduleListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <com.lchli.studydiscuss.common.widget.CommonEmptyView
+            android:id="@+id/empty_widget"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

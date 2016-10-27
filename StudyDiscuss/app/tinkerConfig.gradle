@@ -1,0 +1,314 @@
+project.android.defaultConfig {
+
+    multiDexEnabled true
+    /**
+     * not like proguard, multiDexKeepProguard is not a list, so we can't just
+     * add for you in our task. you can copy tinker keep rules at
+     * build/intermediates/tinker_intermediates/tinker_multidexkeep.pro
+     */
+    multiDexKeepProguard file("keep_in_main_dex.txt")
+
+    buildConfigField "String", "PLATFORM", "\"all\""
+    /**
+     * client version would update with patch
+     * so we can get the newly git version easily!
+     * client version who will apply this patch.
+     * 由app自行决定将对哪些版本应用补丁，而不是由tinker决定。
+     */
+    buildConfigField "String", "CLIENT_VERSION", CLIENT_VERSION
+    buildConfigField "String", "PATCH_VERSION", PATCH_VERSION
+}
+
+project.android.dexOptions {
+    jumboMode = true
+}
+project.dependencies {
+    compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") {
+        changing = true
+        exclude group: 'com.android.support'
+    }
+    compile("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") {
+        changing = true
+        exclude group: 'com.android.support'
+    }
+    compile "com.android.support:multidex:1.0.1"
+}
+
+def bakPath = file("${buildDir}/bakApk/")
+/**
+ * you can use assembleRelease to build you base apk
+ * use tinkerPatchRelease -POLD_APK=  -PAPPLY_MAPPING=  -PAPPLY_RESOURCE= to build patch
+ * add apk from the build/bakApk
+ */
+ext {
+    //for some reason, you may want to ignore tinkerBuild, such as instant run debug build?
+    tinkerEnabled = true
+
+    //for normal build
+    //old apk file to build patch apk
+    tinkerOldApkPath = "${bakPath}/app-debug-1024-22-52-34.apk"
+    //proguard mapping file to build patch apk
+    tinkerApplyMappingPath = "${bakPath}/"
+    //resource R.txt to build patch apk, must input if there is resource changed
+    tinkerApplyResourcePath = "${bakPath}/app-debug-1024-22-52-34-R.txt"
+
+    //use for build all flavor, just fill this field
+    tinkerBuildFlavorDirectory = "${bakPath}/app-1014-13-35-12"
+}
+
+
+def getOldApkPath() {
+    return hasProperty("OLD_APK") ? OLD_APK : ext.tinkerOldApkPath
+}
+
+def getApplyMappingPath() {
+    return hasProperty("APPLY_MAPPING") ? APPLY_MAPPING : ext.tinkerApplyMappingPath
+}
+
+def getApplyResourceMappingPath() {
+    return hasProperty("APPLY_RESOURCE") ? APPLY_RESOURCE : ext.tinkerApplyResourcePath
+}
+
+def getTinkerIdValue() {
+    return hasProperty("TINKER_ID") ? TINKER_ID : "tinkerId-" + android.defaultConfig.versionName
+}
+
+def buildWithTinker() {
+    return hasProperty("TINKER_ENABLE") ? TINKER_ENABLE : ext.tinkerEnabled
+}
+
+def getTinkerBuildFlavorDirectory() {
+    return ext.tinkerBuildFlavorDirectory
+}
+
+if (buildWithTinker()) {
+    apply plugin: 'com.tencent.tinker.patch'
+
+    tinkerPatch {
+        /**
+         * necessary，default 'null'
+         * the old apk path, use to diff with the new apk to build
+         * add apk from the build/bakApk
+         */
+        oldApk = getOldApkPath()
+        /**
+         * optional，default 'false'
+         * there are some cases we may get some warnings
+         * if ignoreWarning is true, we would just assert the patch process
+         * case 1: minSdkVersion is below 14, but you are using dexMode with raw.
+         *         it must be crash when load.
+         * case 2: newly added Android Component in AndroidManifest.xml,
+         *         it must be crash when load.
+         * case 3: loader classes in dex.loader{} are not keep in the main dex,
+         *         it must be let tinker not work.
+         * case 4: loader classes in dex.loader{} changes,
+         *         loader classes is ues to load patch dex. it is useless to change them.
+         *         it won't crash, but these changes can't effect. you may ignore it
+         * case 5: resources.arsc has changed, but we don't use applyResourceMapping to build
+         */
+        ignoreWarning = false
+
+        /**
+         * optional，default 'true'
+         * whether sign the patch file
+         * if not, you must do yourself. otherwise it can't check success during the patch loading
+         * we will use the sign com.lchli.studydiscuss.bm.config with your build type
+         */
+        useSign = true
+
+        /**
+         * Warning, applyMapping will affect the normal android build!
+         */
+        buildConfig {
+            /**
+             * optional，default 'null'
+             * if we use tinkerPatch to build the patch apk, you'd better to apply the old
+             * apk mapping file if minifyEnabled is enable!
+             * Warning:
+             * you must be careful that it will affect the normal assemble build!
+             */
+            applyMapping = getApplyMappingPath()
+            /**
+             * optional，default 'null'
+             * It is nice to keep the resource id from R.txt file to reduce java changes
+             */
+            applyResourceMapping = getApplyResourceMappingPath()
+
+            /**
+             * necessary，default 'null'
+             * because we don't want to check the base apk with md5 in the runtime(it is slow)
+             * tinkerId is use to identify the unique base apk when the patch is tried to apply.
+             * we can use git rev, svn rev or simply versionCode.
+             * we will gen the tinkerId in your manifest automatic
+             */
+            tinkerId = getTinkerIdValue()
+        }
+
+        dex {
+            /**
+             * optional，default 'jar'
+             * only can be 'raw' or 'jar'. for raw, we would keep its original format
+             * for jar, we would repack dexes with zip format.
+             * if you want to support below 14, you must use jar
+             * or you want to save rom or check quicker, you can use raw mode also
+             */
+            dexMode = "jar"
+            /**
+             * optional，default 'false'
+             * if usePreGeneratedPatchDex is true, tinker framework will generate auxiliary class
+             * and insert auxiliary instruction when compiling base package using
+             * assemble{Debug/Release} task to prevent class pre-verified issue in dvm.
+             * Besides, a real dex file contains necessary class will be generated and packed into
+             * patch package instead of any patch info files.
+             *
+             * Use this mode if you have to use any dex encryption solutions.
+             *
+             * Notice: If you change this value, please trigger clean task
+             * and regenerate base package.
+             */
+            usePreGeneratedPatchDex = false
+            /**
+             * necessary，default '[]'
+             * what dexes in apk are expected to deal with tinkerPatch
+             * it support * or ? pattern.
+             */
+            pattern = ["classes*.dex",
+                       "assets/secondary-dex-?.jar"]
+            /**
+             * necessary，default '[]'
+             * Warning, it is very very important, loader classes can't change with patch.
+             * thus, they will be removed from patch dexes.
+             * you must put the following class into main dex.
+             * Simply, you should add your own application {@code tinker.sample.android.SampleApplication}
+             * own tinkerLoader, and the classes you use in them
+             *
+             */
+            loader = ["com.tencent.tinker.loader.*",
+                      //warning, you must change it with your application
+                      "com.lchli.studydiscuss.bm.hotfixTinker.app.SampleApplication",
+                      //use sample, let BaseBuildInfo unchangeable with tinker
+                      "com.lchli.studydiscuss.bm.hotfixTinker.app.BaseBuildInfo"
+            ]
+        }
+
+        lib {
+            /**
+             * optional，default '[]'
+             * what library in apk are expected to deal with tinkerPatch
+             * it support * or ? pattern.
+             * for library in assets, we would just recover them in the patch directory
+             * you can get them in TinkerLoadResult with Tinker
+             */
+            pattern = ["lib/armeabi/*.so"]
+        }
+
+        res {
+            /**
+             * optional，default '[]'
+             * what resource in apk are expected to deal with tinkerPatch
+             * it support * or ? pattern.
+             * you must include all your resources in apk here,
+             * otherwise, they won't repack in the new apk resources.
+             */
+            pattern = ["res/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+
+            /**
+             * optional，default '[]'
+             * the resource file exclude patterns, ignore add, delete or modify resource change
+             * it support * or ? pattern.
+             * Warning, we can only use for files no relative with resources.arsc
+             */
+            ignoreChange = ["assets/sample_meta.txt"]
+
+            /**
+             * default 100kb
+             * for modify resource, if it is larger than 'largeModSize'
+             * we would like to use bsdiff algorithm to reduce patch file size
+             */
+            largeModSize = 100
+        }
+
+        packageConfig {
+            /**
+             * just a sample case, you can use such as sdkVersion, brand, channel...
+             * you can parse it in the SamplePatchListener.
+             * Then you can use patch conditional!
+             */
+            configField("platform", "all")
+
+            configField("patchVersion", PATCH_VERSION)
+            //when upgrade patch ,you should change version.
+        }
+
+        /**
+         * if you don't use zipArtifact or path, we just use 7za to try
+         */
+        sevenZip {
+            /**
+             * optional，default '7za'
+             * the 7zip artifact path, it will use the right 7za with your platform
+             */
+            zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+        }
+
+
+    }//tinker path end.
+
+    /**
+     * bak apk and mapping
+     */
+    android.applicationVariants.all { variant ->
+        /**
+         * task type, you want to bak
+         */
+        def taskName = variant.name
+        def date = new Date().format("MMdd-HH-mm-ss")
+
+        tasks.all {
+            if ("assemble${taskName.capitalize()}".equalsIgnoreCase(it.name)) {
+
+                it.doLast {
+                    copy {
+                        def fileNamePrefix = "${project.name}-${variant.baseName}"
+                        def newFileNamePrefix = "${fileNamePrefix}-${date}"
+
+                        def destPath = bakPath
+                        //clear old baks
+                        if (!bakPath.exists()) {
+                            bakPath.mkdirs()
+                        }
+                        bakPath.eachFile {
+                            println "it.path:${it.path}"
+                            println "project.ext.tinkerOldApkPath:${project.ext.tinkerOldApkPath}"
+
+                            if (!it.name.equals(file(project.ext.tinkerOldApkPath).name)
+                                    && !it.name.equals(file(project.ext.tinkerApplyMappingPath).name)
+                                    && !it.name.equals(file(project.ext.tinkerApplyResourcePath).name)) {
+                                it.delete()
+                            }
+                        }
+                        //start copy.
+                        from variant.outputs.outputFile
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("${fileNamePrefix}.apk", "${newFileNamePrefix}.apk")
+                        }
+
+                        from "${buildDir}/outputs/mapping/${variant.dirName}/mapping.txt"
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("mapping.txt", "${newFileNamePrefix}-mapping.txt")
+                        }
+
+                        from "${buildDir}/intermediates/symbols/${variant.dirName}/R.txt"
+                        into destPath
+                        rename { String fileName ->
+                            fileName.replace("R.txt", "${newFileNamePrefix}-R.txt")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}//if end.

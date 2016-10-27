@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UserCenterListItem">
+        <attr name="UserCenterListItem_text" format="string|reference"/>
+        <attr name="UserCenterListItem_icon" format="reference"/>
+    </declare-styleable>
+</resources>
