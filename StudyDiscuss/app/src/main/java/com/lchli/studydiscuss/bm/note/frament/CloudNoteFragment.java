@@ -19,20 +19,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseFragment;
-import com.lchli.studydiscuss.common.base.BaseRecyclerAdapter;
-import com.lchli.studydiscuss.common.base.BaseResponse;
-import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
-import com.lchli.studydiscuss.common.networkLib.OkError;
-import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
-import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
-import com.lchli.studydiscuss.common.consts.SeverConst;
-import com.lchli.studydiscuss.common.consts.UrlConst;
-import com.lchli.studydiscuss.common.utils.AppDiskCacher;
-import com.lchli.studydiscuss.common.utils.MapUtils;
-import com.lchli.studydiscuss.common.widget.CommonEmptyView;
-import com.lchli.studydiscuss.common.widget.CommonTitleView;
-import com.lchli.studydiscuss.common.widget.LoadingDialog;
 import com.lchli.studydiscuss.bm.note.activity.CloudNoteDetailActivity;
 import com.lchli.studydiscuss.bm.note.busEvent.CloudNoteListChangedEvent;
 import com.lchli.studydiscuss.bm.note.entity.Note;
@@ -42,8 +28,29 @@ import com.lchli.studydiscuss.bm.note.entity.SortData;
 import com.lchli.studydiscuss.bm.note.widget.GridDividerDecoration;
 import com.lchli.studydiscuss.bm.note.widget.NoteFilterPopup;
 import com.lchli.studydiscuss.bm.note.widget.SortPopupWraper;
-import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
 import com.lchli.studydiscuss.bm.user.entity.User;
+import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
+import com.lchli.studydiscuss.common.base.BaseFragment;
+import com.lchli.studydiscuss.common.base.BaseRecyclerAdapter;
+import com.lchli.studydiscuss.common.base.BaseResponse;
+import com.lchli.studydiscuss.common.consts.LocalConst;
+import com.lchli.studydiscuss.common.consts.SeverConst;
+import com.lchli.studydiscuss.common.consts.UrlConst;
+import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
+import com.lchli.studydiscuss.common.networkLib.OkError;
+import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
+import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
+import com.lchli.studydiscuss.common.utils.AppDiskCacher;
+import com.lchli.studydiscuss.common.utils.ContextProvider;
+import com.lchli.studydiscuss.common.utils.EventBusUtils;
+import com.lchli.studydiscuss.common.utils.HttpHelper;
+import com.lchli.studydiscuss.common.utils.ListUtils;
+import com.lchli.studydiscuss.common.utils.MapUtils;
+import com.lchli.studydiscuss.common.utils.ResUtils;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
+import com.lchli.studydiscuss.common.widget.CommonEmptyView;
+import com.lchli.studydiscuss.common.widget.CommonTitleView;
+import com.lchli.studydiscuss.common.widget.LoadingDialog;
 
 import junit.framework.Assert;
 
@@ -52,14 +59,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Map;
 
-import com.lchli.studydiscuss.common.utils.ContextProvider;
-import com.lchli.studydiscuss.common.utils.EventBusUtils;
-import com.lchli.studydiscuss.common.utils.ResUtils;
-import com.lchli.studydiscuss.common.utils.ToastUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import com.lchli.studydiscuss.common.utils.ListUtils;
 
 /**
  * Created by lchli on 2016/8/10.
@@ -202,7 +204,7 @@ public class CloudNoteFragment extends BaseFragment {
 
         }
         //get from net.
-        AppHttpManager.post(url, params, new OkUiCallback<NotesResponse>() {
+        AppHttpManager.get(url, params, new OkUiCallback<NotesResponse>() {
             @Override
             public void onSuccess(NotesResponse response) {
                 Assert.assertNotNull(response);
@@ -264,7 +266,8 @@ public class CloudNoteFragment extends BaseFragment {
             holder.couseTitleTextView.setText(data.title);
             holder.courseTimeTextView.setText(data.lastModifyTime);
             if (!isScrolling) {
-                Glide.with(holder.itemView.getContext()).load(data.imagesDir + "/" + data.thumbNail).into(holder.courseThumbImageView);
+                String url= HttpHelper.addExtraParamsToUrl(data.imagesDir +  data.thumbNail, LocalConst.getNoteServerVerifyParams());
+                Glide.with(holder.itemView.getContext()).load(url).into(holder.courseThumbImageView);
             } else {
                 holder.courseThumbImageView.setImageBitmap(def);
             }

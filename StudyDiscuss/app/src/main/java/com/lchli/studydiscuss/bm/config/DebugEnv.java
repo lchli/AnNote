@@ -7,7 +7,7 @@ package com.lchli.studydiscuss.bm.config;
 public class DebugEnv implements AppEnvironment {
     @Override
     public String getIP() {
-        return "http://192.168.1.7";
+        return "http://192.168.1.13";
     }
 
     @Override

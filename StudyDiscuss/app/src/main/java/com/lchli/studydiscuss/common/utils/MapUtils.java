@@ -26,4 +26,10 @@ public class MapUtils {
         int sepIndex = stringBuilder.lastIndexOf(seprator);
         return stringBuilder.toString().substring(0, sepIndex);
     }
+
+    public static boolean isEmpty(Map map){
+
+        return map==null||map.isEmpty();
+
+    }
 }

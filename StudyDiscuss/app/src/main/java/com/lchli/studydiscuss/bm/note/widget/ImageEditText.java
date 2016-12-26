@@ -8,15 +8,13 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.consts.LocalConst;
 import com.lchli.studydiscuss.bm.note.NoteUtils;
+import com.lchli.studydiscuss.common.consts.LocalConst;
+import com.lchli.studydiscuss.common.utils.BitmapScaleUtil;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
-
-import com.lchli.studydiscuss.common.utils.BitmapScaleUtil;
-import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 /**
  * Created by lchli on 2016/8/12.
@@ -24,7 +22,6 @@ import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 public class ImageEditText extends EditText {
 
-    private static final String HTML_IMG_PATTERN = "<br><img src=\"%s\" /><br>";
 
     public ImageEditText(Context context) {
         super(context);
@@ -80,12 +77,12 @@ public class ImageEditText extends EditText {
             @Override
             protected void onPostExecute(String imageName) {
                 if (imageName != null) {
-                    String imageTag = String.format(Locale.ENGLISH, HTML_IMG_PATTERN, imageName);
+                    String imgLabel = NoteUtils.buildImgLabel(imageName);
                     int selection = getSelectionStart();
                     if (selection == -1) {
                         selection = 0;
                     }
-                    getText().insert(selection, Html.fromHtml(imageTag, imageGetter, null));
+                    getText().insert(selection, Html.fromHtml(imgLabel, imageGetter, null));
                 } else {
                     ToastUtils.systemToast(R.string.insert_image_fail);
                 }

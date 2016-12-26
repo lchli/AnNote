@@ -20,23 +20,23 @@ import android.widget.TextView;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
-import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
-import com.lchli.studydiscuss.common.networkLib.OkError;
-import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
-import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
-import com.lchli.studydiscuss.common.consts.UrlConst;
-import com.lchli.studydiscuss.common.utils.MapUtils;
 import com.lchli.studydiscuss.bm.note.NoteUtils;
 import com.lchli.studydiscuss.bm.note.entity.Note;
 import com.lchli.studydiscuss.bm.note.widget.LinkMovementMethodExt;
 import com.lchli.studydiscuss.bm.note.widget.URLImageGetter;
 import com.lchli.studydiscuss.bm.user.entity.RegisterReponse;
+import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
+import com.lchli.studydiscuss.common.consts.UrlConst;
+import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
+import com.lchli.studydiscuss.common.networkLib.OkError;
+import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
+import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
+import com.lchli.studydiscuss.common.utils.MapUtils;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.lchli.studydiscuss.common.utils.ToastUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -86,15 +86,17 @@ public class CloudNoteDetailActivity extends BaseAppCompatActivity {
         collapsingToolbar.setTitle(note.title);
 
         imageEditTextContent.setMovementMethod(new LinkMovementMethodExt(handler, ImageSpan.class));
-        imageEditTextContent.setText(Html.fromHtml(note.content, new URLImageGetter(note.imagesDir, imageEditTextContent), null));
-        LogUtils.e("note.content:" + note.content);
+        String content= NoteUtils.specifyImgSrc(note.content,note.imagesDir);
+
+        imageEditTextContent.setText(Html.fromHtml(content, new URLImageGetter(imageEditTextContent), null));
+        LogUtils.e("f note.content:" + content);
 
         Map<String, String> params = MapUtils.stringMap();
         params.put("uid", note.userId);
-        AppHttpManager.post(UrlConst.GET_USER_INFO_URL, params, new OkUiCallback<RegisterReponse>() {
+        AppHttpManager.get(UrlConst.GET_USER_INFO_URL, params, new OkUiCallback<RegisterReponse>() {
             @Override
             public void onSuccess(RegisterReponse response) {
-                if (response.code == OkErrorCode.SUCCESS) {
+                if (response.code == OkErrorCode.SUCCESS&&response.user!=null) {
                     userNick.setText(response.user.nick);
                     Glide.with(activity()).load(response.user.portraitUrl).placeholder(R.drawable.default_head).into(userPortrait);
                 } else {

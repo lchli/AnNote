@@ -14,7 +14,7 @@ public class User implements Serializable {
     public String account;
     @SerializedName("Pwd")
     public String pwd;
-    @SerializedName("Uid")
+    @SerializedName("uid")
     public String uid;
     @SerializedName("PortraitUrl")
     public String portraitUrl;

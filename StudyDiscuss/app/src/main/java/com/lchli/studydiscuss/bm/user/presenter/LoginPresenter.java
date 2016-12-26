@@ -50,7 +50,7 @@ public class LoginPresenter implements Presenter<LoginMvpView> {
         params.put("userName", userAccount);
         params.put("pwd", userPwd);
 
-        AppHttpManager.post(UrlConst.LOGIN_URL, params, new OkUiCallback<RegisterReponse>() {
+        AppHttpManager.get(UrlConst.LOGIN_URL, params, new OkUiCallback<RegisterReponse>() {
             @Override
             public void onSuccess(RegisterReponse response) {
                 mLoginMvpView.dismissProgressIndicator();

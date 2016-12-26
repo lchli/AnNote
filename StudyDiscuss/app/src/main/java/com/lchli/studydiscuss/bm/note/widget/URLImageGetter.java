@@ -11,18 +11,17 @@ import android.widget.TextView;
 import com.lchli.studydiscuss.common.consts.LocalConst;
 
 import com.lchli.studydiscuss.common.utils.BitmapScaleUtil;
+import com.lchli.studydiscuss.common.utils.HttpHelper;
 import com.lchli.studydiscuss.common.utils.UiHandler;
 
 public class URLImageGetter implements Html.ImageGetter {
 
     private TextView textView;
     private Context context;
-    private String imageDir;
 
-    public URLImageGetter(String imageDir, TextView textView) {
+    public URLImageGetter(TextView textView) {
         this.context = textView.getContext();
         this.textView = textView;
-        this.imageDir = imageDir;
     }
 
     @Override
@@ -60,10 +59,10 @@ public class URLImageGetter implements Html.ImageGetter {
         protected Drawable doInBackground(String... params) {
             String source = params[0];
             Bitmap bmp;
-            if (isNetImagePath(imageDir)) {
-                bmp = BitmapScaleUtil.decodeSampledBitmapFromUrl(imageDir + source, LocalConst.BITMAP_MAX_MEMORY);
+            if (isNetImagePath(source)) {
+                bmp = BitmapScaleUtil.decodeSampledBitmapFromUrl(HttpHelper.addExtraParamsToUrl(source,LocalConst.getNoteServerVerifyParams()), LocalConst.BITMAP_MAX_MEMORY);
             } else {
-                bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(imageDir + "/" + source, LocalConst.BITMAP_MAX_MEMORY);
+                bmp = BitmapScaleUtil.decodeSampledBitmapFromPath(source, LocalConst.BITMAP_MAX_MEMORY);
             }
             if (bmp == null) {
                 return null;

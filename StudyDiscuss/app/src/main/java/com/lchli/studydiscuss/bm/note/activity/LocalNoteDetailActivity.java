@@ -73,8 +73,12 @@ public class LocalNoteDetailActivity extends BaseAppCompatActivity {
         collapsingToolbar.setTitle(note.title);
 
         imageEditTextContent.setMovementMethod(new LinkMovementMethodExt(handler, ImageSpan.class));
-        imageEditTextContent.setText(Html.fromHtml(note.content, new URLImageGetter(note.imagesDir, imageEditTextContent), null));
-        LogUtils.e("note.content:" + note.content);
+        String content= NoteUtils.specifyImgSrc(note.content,note.imagesDir);
+
+
+        imageEditTextContent.setText(Html.fromHtml(content, new URLImageGetter(imageEditTextContent), null));
+        LogUtils.e("formated note.content:" + content);
+
 
 
     }

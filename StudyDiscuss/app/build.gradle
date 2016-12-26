@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
-apply plugin: 'com.lchli.makeApkFlavor'
 apply from: "tinkerConfig.gradle"
 
 def javaVersion = JavaVersion.VERSION_1_7
@@ -57,11 +56,6 @@ android {
         }
     }
 
-    LiAnPlugin {
-        flavorApksDir = "${buildDir}/flavorApks"
-        flavorChannelFilePath = "${buildDir.parent}/channel.txt"
-        sourceApkName = "app-debug.apk"
-    }
 
 }
 
