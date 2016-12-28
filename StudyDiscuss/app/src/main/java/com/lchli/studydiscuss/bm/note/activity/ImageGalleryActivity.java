@@ -75,8 +75,8 @@ public class ImageGalleryActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void UpdateUI(Context context, final int position, String data) {
-            Glide.with(context).load(data).into(imageView);
+        public void UpdateUI(Context context, final int position, String path) {
+            Glide.with(context).load(path).into(imageView);
         }
     }
 }

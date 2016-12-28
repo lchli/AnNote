@@ -3,8 +3,9 @@ package com.lchli.studydiscuss.bm.note.entity;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
 
@@ -14,23 +15,26 @@ import java.io.Serializable;
 @Entity
 public class Note implements Serializable{
     @SerializedName("ImagesDir")
-    public String imagesDir;
+    public String imagesDir="";
     @SerializedName("Content")
-    public String content;
+    public String content="";
     @SerializedName("LastModifyTime")
     public String lastModifyTime;
     @SerializedName("Title")
-    public String title;
+    public String title="";
     @SerializedName("Type")
-    public String type;
+    public String type="";
     @SerializedName("ThumbNail")
-    public String thumbNail;
+    public String thumbNail="";
     @SerializedName("Uid")
     @Id
     public String uid;
 
     @SerializedName("UserId")
     public String userId;
+    @Transient
+    @SerializedName("ShareUrl")
+    public String ShareUrl="";
 
     public String getUid() {
         return this.uid;
@@ -80,9 +84,15 @@ public class Note implements Serializable{
     public void setUserId(String userId) {
         this.userId = userId;
     }
+    public String getShareUrl() {
+        return this.ShareUrl;
+    }
+    public void setShareUrl(String ShareUrl) {
+        this.ShareUrl = ShareUrl;
+    }
     @Generated(hash = 2133484501)
-    public Note(String imagesDir, String content, String lastModifyTime,
-            String title, String type, String thumbNail, String uid, String userId) {
+    public Note(String imagesDir, String content, String lastModifyTime, String title,
+            String type, String thumbNail, String uid, String userId) {
         this.imagesDir = imagesDir;
         this.content = content;
         this.lastModifyTime = lastModifyTime;

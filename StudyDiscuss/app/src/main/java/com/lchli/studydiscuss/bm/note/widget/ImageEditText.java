@@ -42,7 +42,7 @@ public class ImageEditText extends EditText {
         setSelection(getText().length());
     }
 
-    public void insertImage(final String imagePath, final Html.ImageGetter imageGetter, final String courseDir) {
+    public void insertImage(final String imagePath, final Html.ImageGetter imageGetter, final String courseDir,final String noteUid) {
         final File sourceImage = new File(imagePath);
         if (!sourceImage.exists()) {
             ToastUtils.systemToast(R.string.insert_image_fail);
@@ -77,7 +77,7 @@ public class ImageEditText extends EditText {
             @Override
             protected void onPostExecute(String imageName) {
                 if (imageName != null) {
-                    String imgLabel = NoteUtils.buildImgLabel(imageName);
+                    String imgLabel = NoteUtils.buildImgLabel(imageName,noteUid);
                     int selection = getSelectionStart();
                     if (selection == -1) {
                         selection = 0;

@@ -24,6 +24,7 @@ import com.lchli.studydiscuss.bm.note.NoteUtils;
 import com.lchli.studydiscuss.bm.note.entity.Note;
 import com.lchli.studydiscuss.bm.note.widget.LinkMovementMethodExt;
 import com.lchli.studydiscuss.bm.note.widget.URLImageGetter;
+import com.lchli.studydiscuss.common.consts.LocalConst;
 
 import java.util.ArrayList;
 
@@ -73,7 +74,7 @@ public class LocalNoteDetailActivity extends BaseAppCompatActivity {
         collapsingToolbar.setTitle(note.title);
 
         imageEditTextContent.setMovementMethod(new LinkMovementMethodExt(handler, ImageSpan.class));
-        String content= NoteUtils.specifyImgSrc(note.content,note.imagesDir);
+        String content= note.content;
 
 
         imageEditTextContent.setText(Html.fromHtml(content, new URLImageGetter(imageEditTextContent), null));
@@ -95,7 +96,7 @@ public class LocalNoteDetailActivity extends BaseAppCompatActivity {
                     if (span instanceof ImageSpan) {
                         String imagePath = String.format("%s/%s", note.imagesDir, ((ImageSpan) span).getSource());
                         LogUtils.e("clicked img:" + imagePath);
-                        ArrayList<String> imgSrcs = NoteUtils.parseImageSpanSrc(imageEditTextContent, note.imagesDir + "/");
+                        ArrayList<String> imgSrcs = NoteUtils.parseImageSpanSrc(imageEditTextContent, LocalConst.STUDY_APP_ROOT_DIR);
                         int current = imgSrcs.indexOf(imagePath);
                         if (current == -1) {
                             current = 0;

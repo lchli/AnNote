@@ -201,7 +201,7 @@ public class EditNoteActivity extends BaseAppCompatActivity {
     public Drawable getDrawable(String source) {
       LogUtils.e("ImageGetter thread:" + Thread.currentThread().getName());
 
-      String imagePath = NoteUtils.specifyImgSrc(source, courseDir);
+      String imagePath =LocalConst.STUDY_APP_ROOT_DIR+ source;
 
       Bitmap bmp =
           BitmapScaleUtil.decodeSampledBitmapFromPath(imagePath, LocalConst.BITMAP_MAX_MEMORY);
@@ -311,7 +311,7 @@ public class EditNoteActivity extends BaseAppCompatActivity {
           public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (!ListUtils.isEmpty(resultList)) {
               String imagePath = resultList.get(0).getPhotoPath();
-              imageEditTextContent.insertImage(imagePath, localImageGetter, courseDir);
+              imageEditTextContent.insertImage(imagePath, localImageGetter, courseDir,courseUUID);
             }
 
           }
@@ -329,7 +329,7 @@ public class EditNoteActivity extends BaseAppCompatActivity {
       public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
         if (!ListUtils.isEmpty(resultList)) {
           String imagePath = resultList.get(0).getPhotoPath();
-          imageEditTextContent.insertImage(imagePath, localImageGetter, courseDir);
+          imageEditTextContent.insertImage(imagePath, localImageGetter, courseDir,courseUUID);
         }
       }
 

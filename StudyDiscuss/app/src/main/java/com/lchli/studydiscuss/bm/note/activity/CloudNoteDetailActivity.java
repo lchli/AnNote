@@ -1,29 +1,27 @@
 package com.lchli.studydiscuss.bm.note.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.bm.note.NoteUtils;
 import com.lchli.studydiscuss.bm.note.entity.Note;
-import com.lchli.studydiscuss.bm.note.widget.LinkMovementMethodExt;
-import com.lchli.studydiscuss.bm.note.widget.URLImageGetter;
 import com.lchli.studydiscuss.bm.user.entity.RegisterReponse;
 import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
 import com.lchli.studydiscuss.common.consts.UrlConst;
@@ -34,7 +32,6 @@ import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
 import com.lchli.studydiscuss.common.utils.MapUtils;
 import com.lchli.studydiscuss.common.utils.ToastUtils;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -48,114 +45,123 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CloudNoteDetailActivity extends BaseAppCompatActivity {
 
 
-    @Bind(R.id.user_portrait)
-    CircleImageView userPortrait;
-    @Bind(R.id.userNick)
-    TextView userNick;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbar;
-    @Bind(R.id.appbar)
-    AppBarLayout appbar;
-    @Bind(R.id.imageEditText_content)
-    TextView imageEditTextContent;
-    @Bind(R.id.main_content)
-    CoordinatorLayout mainContent;
-    private Note note;
+  @Bind(R.id.user_portrait)
+  CircleImageView userPortrait;
+  @Bind(R.id.userNick)
+  TextView userNick;
+  @Bind(R.id.toolbar)
+  Toolbar toolbar;
+  @Bind(R.id.collapsing_toolbar)
+  CollapsingToolbarLayout collapsingToolbar;
+  @Bind(R.id.appbar)
+  AppBarLayout appbar;
+
+  @Bind(R.id.main_content)
+  CoordinatorLayout mainContent;
+  @Bind(R.id.web)
+  WebView web;
 
 
-    public static void startSelf(Context context, Note note) {
-        Intent it = new Intent(context, CloudNoteDetailActivity.class);
-        if (!(context instanceof Activity)) {
-            it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+  private Note note;
+
+
+  public static void startSelf(Context context, Note note) {
+    Intent it = new Intent(context, CloudNoteDetailActivity.class);
+    if (!(context instanceof Activity)) {
+      it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+    it.putExtra("note", note);
+    context.startActivity(it);
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    note = (Note) getIntent().getSerializableExtra("note");
+    setContentView(R.layout.activity_cloud_note_detail);
+    ButterKnife.bind(this);
+
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    collapsingToolbar.setTitle(note.title);
+
+    LogUtils.e("note.content:" + note.content);
+
+    Map<String, String> params = MapUtils.stringMap();
+    params.put("uid", note.userId);
+    AppHttpManager.get(UrlConst.GET_USER_INFO_URL, params, new OkUiCallback<RegisterReponse>() {
+      @Override
+      public void onSuccess(RegisterReponse response) {
+        if (response.code == OkErrorCode.SUCCESS && response.user != null) {
+          userNick.setText(response.user.nick);
+          Glide.with(activity()).load(response.user.portraitUrl)
+              .placeholder(R.drawable.default_head).into(userPortrait);
+        } else {
+          ToastUtils.systemToast(response.errorMsg);
         }
-        it.putExtra("note", note);
-        context.startActivity(it);
+      }
+
+      @Override
+      public void onFail(OkError error) {
+        ToastUtils.systemToast(error.errMsg);
+      }
+    });
+
+    web.getSettings().setSupportZoom(false);
+    web.getSettings().setBuiltInZoomControls(false);
+    web.setWebViewClient(new WebClient());
+
+    web.loadUrl(note.ShareUrl);
+  }
+
+
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.cloud_note_detail_toolbar_actions, menu);
+    String type = note.type;
+
+    final int maxTypeLen = 5;
+    if (type != null && type.length() >= maxTypeLen) {
+      type = type.substring(0, maxTypeLen) + "...";
+    }
+    menu.findItem(R.id.action_note_type).setTitle(String.format("[%s]", type));
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        finish();
+        break;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (web.canGoBack()) {
+      web.goBack();
+      return;
+    }
+    super.onBackPressed();
+  }
+
+  private static class WebClient extends WebViewClient {
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+      view.loadUrl(request.getUrl().toString());
+      return true;
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        note = (Note) getIntent().getSerializableExtra("note");
-        setContentView(R.layout.activity_cloud_note_detail);
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        collapsingToolbar.setTitle(note.title);
-
-        imageEditTextContent.setMovementMethod(new LinkMovementMethodExt(handler, ImageSpan.class));
-        String content= NoteUtils.specifyImgSrc(note.content,note.imagesDir);
-
-        imageEditTextContent.setText(Html.fromHtml(content, new URLImageGetter(imageEditTextContent), null));
-        LogUtils.e("f note.content:" + content);
-
-        Map<String, String> params = MapUtils.stringMap();
-        params.put("uid", note.userId);
-        AppHttpManager.get(UrlConst.GET_USER_INFO_URL, params, new OkUiCallback<RegisterReponse>() {
-            @Override
-            public void onSuccess(RegisterReponse response) {
-                if (response.code == OkErrorCode.SUCCESS&&response.user!=null) {
-                    userNick.setText(response.user.nick);
-                    Glide.with(activity()).load(response.user.portraitUrl).placeholder(R.drawable.default_head).into(userPortrait);
-                } else {
-                    ToastUtils.systemToast(response.errorMsg);
-                }
-            }
-
-            @Override
-            public void onFail(OkError error) {
-                ToastUtils.systemToast(error.errMsg);
-            }
-        });
-
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+      view.loadUrl(url);
+      return true;
     }
-
-
-    // make links and image work
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            int what = msg.what;
-            if (what == LinkMovementMethodExt.Msg_Image_Clicked) {
-                LinkMovementMethodExt.MessageSpan ms = (LinkMovementMethodExt.MessageSpan) msg.obj;
-                Object[] spans = (Object[]) ms.getObj();
-                for (Object span : spans) {
-                    if (span instanceof ImageSpan) {
-                        String imagePath = String.format("%s/%s", note.imagesDir, ((ImageSpan) span).getSource());
-                        LogUtils.e("clicked img:" + imagePath);
-                        ArrayList<String> imgSrcs = NoteUtils.parseImageSpanSrc(imageEditTextContent, note.imagesDir + "/");
-                        int current = imgSrcs.indexOf(imagePath);
-                        if (current == -1) {
-                            current = 0;
-                        }
-                        ImageGalleryActivity.startSelf(getApplicationContext(), imgSrcs, current);
-                    }
-                }
-            }
-        }
-    };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cloud_note_detail_toolbar_actions, menu);
-        String type = note.type;
-        final int maxTypeLen = 5;
-        if (type.length() >= maxTypeLen) {
-            type = type.substring(0, maxTypeLen) + "...";
-        }
-        menu.findItem(R.id.action_note_type).setTitle(String.format("[%s]", type));
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+  }
 
 }

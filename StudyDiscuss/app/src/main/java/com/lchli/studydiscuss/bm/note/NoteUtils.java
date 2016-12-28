@@ -25,12 +25,11 @@ public class NoteUtils {
   private static final String IMAGE_NAME_PATTERN =
       "%s" + IMAGE_WIDTH_HEIGHT_DEVIDER + "%s" + IMAGE_NAME_DEVIDER + "%s.jpg";// 300x200_test.jpg
 
-  private static final String SOURCE_PREFIX = "!#!";
 
-  private static final String HTML_IMG_PATTERN = "<br><img src=\"%s%s\" /><br>";
+  private static final String HTML_IMG_PATTERN = "<br><img src=\"/resources/%s/%s\" /><br>";
 
   private static final String NOTE_IMAGES_DIR =
-      String.format("%s/%s", LocalConst.STUDY_APP_ROOT_DIR, "NoteImages");
+      String.format("%s/%s", LocalConst.STUDY_APP_ROOT_DIR, "resources");
 
   static {
     FileUtils.mkdirs(new File(NOTE_IMAGES_DIR));
@@ -91,18 +90,13 @@ public class NoteUtils {
     return String.format(IMAGE_NAME_PATTERN, width, height, UUIDUtils.uuid());
   }
 
-  public static String specifyImgSrc(String imgSrc, String imgDirPrefix) {
-    if (imgSrc == null) {
-      return null;
-    }
-    return imgSrc.replaceAll(SOURCE_PREFIX, imgDirPrefix);
-  }
 
-  public static String buildImgLabel(String imgName) {
+
+  public static String buildImgLabel(String imgName,String noteUid) {
     if (imgName == null) {
       return null;
     }
-    return String.format(Locale.ENGLISH, HTML_IMG_PATTERN, NoteUtils.SOURCE_PREFIX, imgName);
+    return String.format(Locale.ENGLISH, HTML_IMG_PATTERN, noteUid, imgName);
   }
 
   public static String buildNoteDir(String courseUUID) {

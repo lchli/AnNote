@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lchli.studydiscuss.R;
@@ -263,6 +264,8 @@ public class CloudNoteFragment extends BaseFragment {
         public void onBindViewHolder(final RecyclerView.ViewHolder h, int position) {
             VH holder = (VH) h;
             final Note data = mDatas.get(position);
+            LogUtils.e("ShareUrl:"+data.ShareUrl);
+
             holder.couseTitleTextView.setText(data.title);
             holder.courseTimeTextView.setText(data.lastModifyTime);
             if (!isScrolling) {
