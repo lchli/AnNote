@@ -9,19 +9,17 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
 import com.lchli.studydiscuss.bm.home.HomeActivity;
+import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 import java.util.List;
 
-import com.lchli.studydiscuss.common.utils.ToastUtils;
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.PauseOnScrollListener;
 import cn.finalteam.galleryfinal.ThemeConfig;
-import com.lchli.studydiscuss.bm.hotfixTinker.PatchObserverService;
-import com.lchli.studydiscuss.bm.hotfixTinker.util.Utils;
 
 /**
  * Created by lchli on 2016/10/16.
@@ -45,8 +43,7 @@ public class SplashActivity extends BaseAppCompatActivity {
                 if (report.areAllPermissionsGranted()) {
                     Thread.setDefaultUncaughtExceptionHandler(new AppExceptionHandler());
                     initGalleryFinal();
-                    PatchObserverService.startSelf(activity());
-                    Utils.setBackground(false);
+
                     //
                     HomeActivity.startSelf(SplashActivity.this);
                 } else {

@@ -9,17 +9,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
-import com.lchli.studydiscuss.common.base.BaseFragment;
-import com.lchli.studydiscuss.common.base.FragmentAdapter;
 import com.lchli.studydiscuss.bm.note.frament.CloudNoteFragment;
 import com.lchli.studydiscuss.bm.note.frament.LocalNoteFragment;
 import com.lchli.studydiscuss.bm.user.view.fragment.UserFragmentContainer;
-
+import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
+import com.lchli.studydiscuss.common.base.BaseFragment;
+import com.lchli.studydiscuss.common.base.FragmentAdapter;
 import com.lchli.studydiscuss.common.utils.ResUtils;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.lchli.studydiscuss.bm.hotfixTinker.util.Utils;
+import cn.finalteam.galleryfinal.utils.Utils;
 
 /**
  * Created by lchli on 2016/8/10.
@@ -88,6 +88,5 @@ public class HomeActivity extends BaseAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.setBackground(true);
     }
 }
