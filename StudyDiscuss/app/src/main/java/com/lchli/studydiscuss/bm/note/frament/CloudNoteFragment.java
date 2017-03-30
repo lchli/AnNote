@@ -20,6 +20,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.note.activity.CloudNoteDetailActivity;
 import com.lchli.studydiscuss.bm.note.busEvent.CloudNoteListChangedEvent;
 import com.lchli.studydiscuss.bm.note.entity.Note;
@@ -60,7 +61,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -70,14 +71,14 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class CloudNoteFragment extends BaseFragment {
 
 
-    @Bind(R.id.common_title)
+    @BindView(R2.id.common_title)
     CommonTitleView commonTitle;
-    @Bind(R.id.moduleListRecyclerView)
+    @BindView(R2.id.moduleListRecyclerView)
     RecyclerView moduleListRecyclerView;
 
-    @Bind(R.id.main_content)
+    @BindView(R2.id.main_content)
     CoordinatorLayout mainContent;
-    @Bind(R.id.empty_widget)
+    @BindView(R2.id.empty_widget)
     CommonEmptyView emptyWidget;
 
     private CloudNoteListAdapter mNotesAdapter;
@@ -336,11 +337,11 @@ public class CloudNoteFragment extends BaseFragment {
 
         class VH extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.course_thumb_imageView)
+            @BindView(R2.id.course_thumb_imageView)
             ImageView courseThumbImageView;
-            @Bind(R.id.couse_title_textView)
+            @BindView(R2.id.couse_title_textView)
             TextView couseTitleTextView;
-            @Bind(R.id.course_time_textView)
+            @BindView(R2.id.course_time_textView)
             TextView courseTimeTextView;
 
             View itemView;

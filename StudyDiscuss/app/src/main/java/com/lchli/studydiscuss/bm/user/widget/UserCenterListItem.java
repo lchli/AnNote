@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -20,9 +21,9 @@ import butterknife.ButterKnife;
 public class UserCenterListItem extends FrameLayout {
 
 
-    @Bind(R.id.icon_widget)
+    @BindView(R2.id.icon_widget)
     public ImageView iconWidget;
-    @Bind(R.id.text_widget)
+    @BindView(R2.id.text_widget)
     public TextView textWidget;
 
     public UserCenterListItem(Context context) {

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.apkfuns.logutils.LogUtils;
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.note.entity.Note;
 import com.lchli.studydiscuss.bm.user.entity.RegisterReponse;
 import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
@@ -34,7 +35,7 @@ import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,20 +46,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CloudNoteDetailActivity extends BaseAppCompatActivity {
 
 
-  @Bind(R.id.user_portrait)
+  @BindView(R2.id.user_portrait)
   CircleImageView userPortrait;
-  @Bind(R.id.userNick)
+  @BindView(R2.id.userNick)
   TextView userNick;
-  @Bind(R.id.toolbar)
+  @BindView(R2.id.toolbar)
   Toolbar toolbar;
-  @Bind(R.id.collapsing_toolbar)
+  @BindView(R2.id.collapsing_toolbar)
   CollapsingToolbarLayout collapsingToolbar;
-  @Bind(R.id.appbar)
+  @BindView(R2.id.appbar)
   AppBarLayout appbar;
 
-  @Bind(R.id.main_content)
+  @BindView(R2.id.main_content)
   CoordinatorLayout mainContent;
-  @Bind(R.id.web)
+  @BindView(R2.id.web)
   WebView web;
 
 

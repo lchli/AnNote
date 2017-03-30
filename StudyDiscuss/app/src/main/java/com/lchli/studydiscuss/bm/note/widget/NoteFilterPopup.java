@@ -11,9 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.note.entity.NoteFilterData;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,13 +25,13 @@ public class NoteFilterPopup extends PopupWindow {
 
 
     private final Context mContext;
-    @Bind(R.id.title_edit)
+    @BindView(R2.id.title_edit)
     EditText titleEdit;
-    @Bind(R.id.tag_edit)
+    @BindView(R2.id.tag_edit)
     EditText tagEdit;
-    @Bind(R.id.btFilter)
+    @BindView(R2.id.btFilter)
     Button btFilter;
-    @Bind(R.id.maskView)
+    @BindView(R2.id.maskView)
     View maskView;
 
     private NoteFilterData postFilterEntity = new NoteFilterData("","");
@@ -65,10 +66,10 @@ public class NoteFilterPopup extends PopupWindow {
     }
 
 
-    @OnClick({R.id.btFilter, R.id.maskView})
+    @OnClick({R2.id.btFilter, R2.id.maskView})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btFilter:
+            case R2.id.btFilter:
                 if (mCallback != null) {
                     postFilterEntity.title = titleEdit.getText().toString();
                     postFilterEntity.tag = tagEdit.getText().toString();
@@ -76,7 +77,7 @@ public class NoteFilterPopup extends PopupWindow {
                 }
                 dismiss();
                 break;
-            case R.id.maskView:
+            case R2.id.maskView:
                 dismiss();
                 break;
         }

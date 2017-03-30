@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.note.frament.CloudNoteFragment;
 import com.lchli.studydiscuss.bm.note.frament.LocalNoteFragment;
 import com.lchli.studydiscuss.bm.user.view.fragment.UserFragmentContainer;
@@ -17,9 +18,8 @@ import com.lchli.studydiscuss.common.base.BaseFragment;
 import com.lchli.studydiscuss.common.base.FragmentAdapter;
 import com.lchli.studydiscuss.common.utils.ResUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.finalteam.galleryfinal.utils.Utils;
 
 /**
  * Created by lchli on 2016/8/10.
@@ -27,9 +27,9 @@ import cn.finalteam.galleryfinal.utils.Utils;
 public class HomeActivity extends BaseAppCompatActivity {
 
 
-    @Bind(R.id.viewpager)
+    @BindView(R2.id.viewpager)
     ViewPager viewpager;
-    @Bind(R.id.tabs)
+    @BindView(R2.id.tabs)
     TabLayout tabs;
 
 

@@ -11,6 +11,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
+import com.lchli.studydiscuss.bm.user.entity.RegisterReponse;
+import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
 import com.lchli.studydiscuss.common.base.BaseFragment;
 import com.lchli.studydiscuss.common.consts.UrlConst;
 import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
@@ -23,15 +26,13 @@ import com.lchli.studydiscuss.common.utils.ResUtils;
 import com.lchli.studydiscuss.common.utils.ToastUtils;
 import com.lchli.studydiscuss.common.widget.CommonTitleView;
 import com.lchli.studydiscuss.common.widget.LoadingDialog;
-import com.lchli.studydiscuss.bm.user.entity.RegisterReponse;
-import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -44,15 +45,15 @@ public class RegisterFragment extends BaseFragment {
 
     private static final int REQUEST_CODE_GALLERY = 1;
 
-    @Bind(R.id.common_title)
+    @BindView(R2.id.common_title)
     CommonTitleView commonTitle;
-    @Bind(R.id.user_portrait)
+    @BindView(R2.id.user_portrait)
     ImageView userPortrait;
-    @Bind(R.id.user_account_edit)
+    @BindView(R2.id.user_account_edit)
     EditText userAccountEdit;
-    @Bind(R.id.user_pwd_edit)
+    @BindView(R2.id.user_pwd_edit)
     EditText userPwdEdit;
-    @Bind(R.id.user_nick)
+    @BindView(R2.id.user_nick)
     EditText userNick;
 
     private String portraitPath;
@@ -91,14 +92,14 @@ public class RegisterFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
 
-    @OnClick({R.id.user_portrait, R.id.register_widget})
+    @OnClick({R2.id.user_portrait, R2.id.register_widget})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.user_portrait:
+            case R2.id.user_portrait:
                 GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, new GalleryFinal.OnHanlderResultCallback() {
                     @Override
                     public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
@@ -116,7 +117,7 @@ public class RegisterFragment extends BaseFragment {
                     }
                 });
                 break;
-            case R.id.register_widget:
+            case R2.id.register_widget:
                 String userAccount = userAccountEdit.getText().toString();
                 if (TextUtils.isEmpty(userAccount)) {
                     ToastUtils.systemToast(R.string.account_cannot_null);

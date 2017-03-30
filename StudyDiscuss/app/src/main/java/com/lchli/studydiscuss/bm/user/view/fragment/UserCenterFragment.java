@@ -12,17 +12,20 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.BuildConfig;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
+import com.lchli.studydiscuss.bm.user.entity.UploadPortraitReponse;
+import com.lchli.studydiscuss.bm.user.entity.User;
+import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
+import com.lchli.studydiscuss.bm.user.widget.UserCenterListItem;
 import com.lchli.studydiscuss.common.base.BaseFragment;
+import com.lchli.studydiscuss.common.consts.UrlConst;
 import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
 import com.lchli.studydiscuss.common.networkLib.OkError;
 import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
 import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
-import com.lchli.studydiscuss.common.consts.UrlConst;
+import com.lchli.studydiscuss.common.utils.ListUtils;
 import com.lchli.studydiscuss.common.utils.MapUtils;
-import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
-import com.lchli.studydiscuss.bm.user.entity.UploadPortraitReponse;
-import com.lchli.studydiscuss.bm.user.entity.User;
-import com.lchli.studydiscuss.bm.user.widget.UserCenterListItem;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
 
 import junit.framework.Assert;
 
@@ -31,13 +34,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.lchli.studydiscuss.common.utils.ToastUtils;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import com.lchli.studydiscuss.common.utils.ListUtils;
 
 import static com.lchli.studydiscuss.bm.user.model.UserSessionManager.getSession;
 
@@ -48,13 +49,13 @@ public class UserCenterFragment extends BaseFragment {
 
     private static final int REQUEST_CODE_GALLERY = 1;
 
-    @Bind(R.id.user_portrait)
+    @BindView(R2.id.user_portrait)
     ImageView userPortrait;
-    @Bind(R.id.user_nick)
+    @BindView(R2.id.user_nick)
     TextView userNick;
-    @Bind(R.id.about_app_widget)
+    @BindView(R2.id.about_app_widget)
     UserCenterListItem aboutAppWidget;
-    @Bind(R.id.check_update_widget)
+    @BindView(R2.id.check_update_widget)
     UserCenterListItem checkUpdateWidget;
 
     public static UserCenterFragment newInstance() {
@@ -87,13 +88,13 @@ public class UserCenterFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
-    @OnClick({R.id.user_portrait, R.id.check_update_widget, R.id.logout_widget})
+    @OnClick({R2.id.user_portrait, R2.id.check_update_widget, R2.id.logout_widget})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.user_portrait:
+            case R2.id.user_portrait:
                 GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, new GalleryFinal.OnHanlderResultCallback() {
                     @Override
                     public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
@@ -140,10 +141,10 @@ public class UserCenterFragment extends BaseFragment {
                     }
                 });
                 break;
-            case R.id.check_update_widget:
+            case R2.id.check_update_widget:
                 ToastUtils.systemToast(R.string.app_no_update);
                 break;
-            case R.id.logout_widget:
+            case R2.id.logout_widget:
                 UserSessionManager.logout();
                 UserFragmentContainer userFragmentContainer = (UserFragmentContainer) getParentFragment();
                 userFragmentContainer.toLogin(true);

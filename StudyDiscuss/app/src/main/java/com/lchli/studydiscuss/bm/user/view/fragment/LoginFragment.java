@@ -11,16 +11,17 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseFragment;
-import com.lchli.studydiscuss.common.widget.CommonTitleView;
-import com.lchli.studydiscuss.common.widget.LoadingDialog;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
 import com.lchli.studydiscuss.bm.user.presenter.LoginPresenter;
 import com.lchli.studydiscuss.bm.user.view.LoginMvpView;
-
+import com.lchli.studydiscuss.common.base.BaseFragment;
 import com.lchli.studydiscuss.common.utils.ResUtils;
 import com.lchli.studydiscuss.common.utils.ToastUtils;
-import butterknife.Bind;
+import com.lchli.studydiscuss.common.widget.CommonTitleView;
+import com.lchli.studydiscuss.common.widget.LoadingDialog;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,13 +31,13 @@ import butterknife.OnClick;
 public class LoginFragment extends BaseFragment implements LoginMvpView {
 
 
-    @Bind(R.id.common_title)
+    @BindView(R2.id.common_title)
     CommonTitleView commonTitle;
-    @Bind(R.id.user_portrait)
+    @BindView(R2.id.user_portrait)
     ImageView userPortrait;
-    @Bind(R.id.user_account_edit)
+    @BindView(R2.id.user_account_edit)
     EditText userAccountEdit;
-    @Bind(R.id.user_pwd_edit)
+    @BindView(R2.id.user_pwd_edit)
     EditText userPwdEdit;
 
     private LoadingDialog mLoadingDialog = new LoadingDialog();
@@ -91,10 +92,10 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
-    @OnClick(R.id.login_widget)
+    @OnClick(R2.id.login_widget)
     public void onClick() {
         presenter.login(userAccountEdit.getText().toString(), userPwdEdit.getText().toString());
     }

@@ -13,12 +13,13 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bumptech.glide.Glide;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 
 public class ImageGalleryActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.convenientBanner)
+    @BindView(R2.id.convenientBanner)
     ConvenientBanner convenientBanner;
 
     public static void startSelf(Context context, ArrayList<String> images, int current) {

@@ -22,20 +22,8 @@ import com.lchli.pinedrecyclerlistview.library.ListSectionData;
 import com.lchli.pinedrecyclerlistview.library.pinnedRecyclerView.PinnedRecyclerAdapter;
 import com.lchli.pinedrecyclerlistview.library.pinnedRecyclerView.PinnedRecyclerView;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.StudyApp;
-import com.lchli.studydiscuss.common.base.BaseFragment;
-import com.lchli.studydiscuss.common.base.BaseResponse;
-import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
-import com.lchli.studydiscuss.common.networkLib.OkError;
-import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
-import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
-import com.lchli.studydiscuss.common.consts.SeverConst;
-import com.lchli.studydiscuss.common.consts.UrlConst;
-import com.lchli.studydiscuss.common.utils.AppListItemAnimatorUtils;
-import com.lchli.studydiscuss.common.utils.MapUtils;
-import com.lchli.studydiscuss.common.widget.CommonEmptyView;
-import com.lchli.studydiscuss.common.widget.CommonTitleView;
-import com.lchli.studydiscuss.common.widget.LoadingDialog;
 import com.lchli.studydiscuss.bm.note.activity.EditNoteActivity;
 import com.lchli.studydiscuss.bm.note.activity.LocalNoteDetailActivity;
 import com.lchli.studydiscuss.bm.note.busEvent.CloudNoteListChangedEvent;
@@ -48,6 +36,24 @@ import com.lchli.studydiscuss.bm.note.widget.GridDividerDecoration;
 import com.lchli.studydiscuss.bm.note.widget.NoteFilterPopup;
 import com.lchli.studydiscuss.bm.note.widget.SortPopupWraper;
 import com.lchli.studydiscuss.bm.user.entity.User;
+import com.lchli.studydiscuss.common.base.BaseFragment;
+import com.lchli.studydiscuss.common.base.BaseResponse;
+import com.lchli.studydiscuss.common.consts.SeverConst;
+import com.lchli.studydiscuss.common.consts.UrlConst;
+import com.lchli.studydiscuss.common.networkLib.AppHttpManager;
+import com.lchli.studydiscuss.common.networkLib.OkError;
+import com.lchli.studydiscuss.common.networkLib.OkErrorCode;
+import com.lchli.studydiscuss.common.networkLib.OkUiCallback;
+import com.lchli.studydiscuss.common.utils.AppListItemAnimatorUtils;
+import com.lchli.studydiscuss.common.utils.ContextProvider;
+import com.lchli.studydiscuss.common.utils.EventBusUtils;
+import com.lchli.studydiscuss.common.utils.ListUtils;
+import com.lchli.studydiscuss.common.utils.MapUtils;
+import com.lchli.studydiscuss.common.utils.ResUtils;
+import com.lchli.studydiscuss.common.utils.ToastUtils;
+import com.lchli.studydiscuss.common.widget.CommonEmptyView;
+import com.lchli.studydiscuss.common.widget.CommonTitleView;
+import com.lchli.studydiscuss.common.widget.LoadingDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,16 +65,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.lchli.studydiscuss.common.utils.ContextProvider;
-import com.lchli.studydiscuss.common.utils.EventBusUtils;
-import com.lchli.studydiscuss.common.utils.ResUtils;
-import com.lchli.studydiscuss.common.utils.ToastUtils;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.toolsfinal.io.FileUtils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import com.lchli.studydiscuss.common.utils.ListUtils;
 
 import static com.lchli.studydiscuss.bm.user.model.UserSessionManager.getSession;
 
@@ -78,15 +79,15 @@ import static com.lchli.studydiscuss.bm.user.model.UserSessionManager.getSession
 public class LocalNoteFragment extends BaseFragment {
 
 
-    @Bind(R.id.common_title)
+    @BindView(R2.id.common_title)
     CommonTitleView commonTitle;
-    @Bind(R.id.moduleListRecyclerView)
+    @BindView(R2.id.moduleListRecyclerView)
     PinnedRecyclerView moduleListRecyclerView;
-    @Bind(R.id.fab)
+    @BindView(R2.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.main_content)
+    @BindView(R2.id.main_content)
     CoordinatorLayout mainContent;
-    @Bind(R.id.empty_widget)
+    @BindView(R2.id.empty_widget)
     CommonEmptyView emptyWidget;
 
     private LocalNoteListAdapter mNotesAdapter;
@@ -248,7 +249,7 @@ public class LocalNoteFragment extends BaseFragment {
         EventBusUtils.unregister(this);
     }
 
-    @OnClick(R.id.fab)
+    @OnClick(R2.id.fab)
     public void onClick() {
         EditNoteActivity.startSelf(getActivity());
     }
@@ -424,13 +425,13 @@ public class LocalNoteFragment extends BaseFragment {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
-            @Bind(R.id.course_thumb_imageView)
+            @BindView(R2.id.course_thumb_imageView)
             ImageView courseThumbImageView;
-            @Bind(R.id.couse_title_textView)
+            @BindView(R2.id.couse_title_textView)
             TextView couseTitleTextView;
-            @Bind(R.id.course_time_textView)
+            @BindView(R2.id.course_time_textView)
             TextView courseTimeTextView;
-            @Bind(R.id.course_upload)
+            @BindView(R2.id.course_upload)
             TextView courseUpload;
 
             public View itemView;
@@ -458,7 +459,7 @@ public class LocalNoteFragment extends BaseFragment {
         class PinedViewHolder extends RecyclerView.ViewHolder {
 
             public View itemView;
-            @Bind(R.id.pinedHeader)
+            @BindView(R2.id.pinedHeader)
             TextView pinedHeader;
 
             public PinedViewHolder(View view) {

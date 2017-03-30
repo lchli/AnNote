@@ -12,8 +12,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,9 +26,9 @@ public class ListPopup extends PopupWindow {
 
     private final Context context;
 
-    @Bind(R.id.listView)
+    @BindView(R2.id.listView)
     ListView listView;
-    @Bind(R.id.mask)
+    @BindView(R2.id.mask)
     View mask;
 
     public ListPopup(Context context) {
@@ -85,7 +86,7 @@ public class ListPopup extends PopupWindow {
     }
 
 
-    @OnClick(R.id.mask)
+    @OnClick(R2.id.mask)
     public void onClick() {
         dismiss();
     }

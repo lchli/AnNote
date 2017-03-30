@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
+import com.lchli.studydiscuss.bm.note.entity.SortData;
 import com.lchli.studydiscuss.common.base.AbsAdapter;
 import com.lchli.studydiscuss.common.consts.SeverConst;
+import com.lchli.studydiscuss.common.utils.ContextProvider;
+import com.lchli.studydiscuss.common.utils.ResUtils;
 import com.lchli.studydiscuss.common.widget.ListPopup;
-import com.lchli.studydiscuss.bm.note.entity.SortData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lchli.studydiscuss.common.utils.ContextProvider;
-import com.lchli.studydiscuss.common.utils.ResUtils;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.inflate;
@@ -70,7 +71,7 @@ public class SortPopupWraper {
         }
 
         class ViewHolder extends AbsViewHolder {
-            @Bind(R.id.text_widget)
+            @BindView(R2.id.text_widget)
             TextView text_widget;
             View view;
 

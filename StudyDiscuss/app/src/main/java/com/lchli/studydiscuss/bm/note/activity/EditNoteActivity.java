@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.lchli.studydiscuss.R;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.StudyApp;
 import com.lchli.studydiscuss.bm.note.NoteUtils;
 import com.lchli.studydiscuss.bm.note.busEvent.LocalNoteListChangedEvent;
@@ -55,7 +56,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -76,17 +77,17 @@ public class EditNoteActivity extends BaseAppCompatActivity {
 
 
 
-  @Bind(R.id.tv_note_category)
+  @BindView(R2.id.tv_note_category)
   TextView tvNoteCategory;
-  @Bind(R.id.et_note_title)
+  @BindView(R2.id.et_note_title)
   EditText etNoteTitle;
-  @Bind(R.id.imageEditText_content)
+  @BindView(R2.id.imageEditText_content)
   ImageEditText imageEditTextContent;
-  @Bind(R.id.bt_save)
+  @BindView(R2.id.bt_save)
   Button btSave;
-  @Bind(R.id.bt_more)
+  @BindView(R2.id.bt_more)
   Button btMore;
-  @Bind(R.id.title_bar)
+  @BindView(R2.id.title_bar)
   View title_bar;
 
   private String courseUUID;
@@ -220,10 +221,10 @@ public class EditNoteActivity extends BaseAppCompatActivity {
     }
   };
 
-  @OnClick({R.id.bt_save, R.id.bt_more, R.id.tv_note_category})
+  @OnClick({R2.id.bt_save, R2.id.bt_more, R2.id.tv_note_category})
   public void onClick(View view) {
     switch (view.getId()) {
-      case R.id.bt_save:
+      case R2.id.bt_save:
         String title = etNoteTitle.getText().toString();
         if (TextUtils.isEmpty(title)) {
           ToastUtils.systemToast(R.string.note_title_cannot_empty);
@@ -266,7 +267,7 @@ public class EditNoteActivity extends BaseAppCompatActivity {
         EventBusUtils.post(new LocalNoteListChangedEvent());
         finish();
         break;
-      case R.id.bt_more:
+      case R2.id.bt_more:
         DialogPlus dialog = DialogPlus.newDialog(this)
             .setAdapter(new InsertImageDialogAdapter(getApplicationContext()))
             .setOnItemClickListener(new OnItemClickListener() {
@@ -291,7 +292,7 @@ public class EditNoteActivity extends BaseAppCompatActivity {
         dialog.show();
 
         break;
-      case R.id.tv_note_category:
+      case R2.id.tv_note_category:
         noteTypePop.showAsDropDown(title_bar);
         break;
     }
@@ -391,9 +392,9 @@ public class EditNoteActivity extends BaseAppCompatActivity {
     }
 
     class ViewHolder extends AbsViewHolder {
-      @Bind(R.id.tag_widget)
+      @BindView(R2.id.tag_widget)
       TextView tagWidget;
-      @Bind(R.id.delete_widget)
+      @BindView(R2.id.delete_widget)
       ImageView deleteWidget;
       View view;
 

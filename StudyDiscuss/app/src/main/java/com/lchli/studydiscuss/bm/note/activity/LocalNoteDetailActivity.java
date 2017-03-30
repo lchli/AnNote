@@ -19,16 +19,17 @@ import android.widget.TextView;
 
 import com.apkfuns.logutils.LogUtils;
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.note.NoteUtils;
 import com.lchli.studydiscuss.bm.note.entity.Note;
 import com.lchli.studydiscuss.bm.note.widget.LinkMovementMethodExt;
 import com.lchli.studydiscuss.bm.note.widget.URLImageGetter;
+import com.lchli.studydiscuss.common.base.BaseAppCompatActivity;
 import com.lchli.studydiscuss.common.consts.LocalConst;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -38,15 +39,15 @@ import butterknife.ButterKnife;
 public class LocalNoteDetailActivity extends BaseAppCompatActivity {
 
 
-    @Bind(R.id.imageEditText_content)
+    @BindView(R2.id.imageEditText_content)
     TextView imageEditTextContent;
-    @Bind(R.id.toolbar)
+    @BindView(R2.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.collapsing_toolbar)
+    @BindView(R2.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-    @Bind(R.id.appbar)
+    @BindView(R2.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.main_content)
+    @BindView(R2.id.main_content)
     CoordinatorLayout mainContent;
 
     private Note note;
@@ -124,7 +125,7 @@ public class LocalNoteDetailActivity extends BaseAppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_edit_note:
+            case R2.id.action_edit_note:
                 EditNoteActivity.startSelf(this, note);
                 finish();
                 break;

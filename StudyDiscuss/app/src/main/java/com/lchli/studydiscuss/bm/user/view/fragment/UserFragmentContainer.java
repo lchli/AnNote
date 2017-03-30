@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.lchli.studydiscuss.R;
-import com.lchli.studydiscuss.common.base.BaseFragment;
+import com.lchli.studydiscuss.R2;
 import com.lchli.studydiscuss.bm.user.model.UserSessionManager;
+import com.lchli.studydiscuss.common.base.BaseFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 public class UserFragmentContainer extends BaseFragment {
 
 
-    @Bind(R.id.user_fragment_container)
+    @BindView(R2.id.user_fragment_container)
     FrameLayout userFragmentContainer;
 
     public static UserFragmentContainer newInstance() {
@@ -83,7 +84,7 @@ public class UserFragmentContainer extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override
