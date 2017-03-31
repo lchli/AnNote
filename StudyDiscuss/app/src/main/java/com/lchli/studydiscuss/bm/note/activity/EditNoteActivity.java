@@ -223,78 +223,78 @@ public class EditNoteActivity extends BaseAppCompatActivity {
 
   @OnClick({R2.id.bt_save, R2.id.bt_more, R2.id.tv_note_category})
   public void onClick(View view) {
-    switch (view.getId()) {
-      case R2.id.bt_save:
-        String title = etNoteTitle.getText().toString();
-        if (TextUtils.isEmpty(title)) {
-          ToastUtils.systemToast(R.string.note_title_cannot_empty);
-          return;
-        }
-        String htmlContent = Html.toHtml(imageEditTextContent.getText());
-        if (TextUtils.isEmpty(htmlContent)) {
-          ToastUtils.systemToast(R.string.note_content_cannot_empty);
-          return;
-        }
-        final String thumbName = UUIDUtils.uuid() + ".jpg";
-        final File destFile = new File(courseDir, thumbName);
-        if (!destFile.exists()) {
-          try {
-            destFile.createNewFile();
-          } catch (IOException e) {
-            ToastUtils.systemToast(R.string.save_note_thumb_fail);
-            e.printStackTrace();
-            return;
-          }
-        }
-        boolean isSuccess =
-            BitmapScaleUtil.saveBitmap(getViewBitmap(imageEditTextContent), destFile, 100);
-        if (!isSuccess) {
+    int i = view.getId();
+    if (i == R.id.bt_save) {
+      String title = etNoteTitle.getText().toString();
+      if (TextUtils.isEmpty(title)) {
+        ToastUtils.systemToast(R.string.note_title_cannot_empty);
+        return;
+      }
+      String htmlContent = Html.toHtml(imageEditTextContent.getText());
+      if (TextUtils.isEmpty(htmlContent)) {
+        ToastUtils.systemToast(R.string.note_content_cannot_empty);
+        return;
+      }
+      final String thumbName = UUIDUtils.uuid() + ".jpg";
+      final File destFile = new File(courseDir, thumbName);
+      if (!destFile.exists()) {
+        try {
+          destFile.createNewFile();
+        } catch (IOException e) {
           ToastUtils.systemToast(R.string.save_note_thumb_fail);
+          e.printStackTrace();
           return;
         }
-        Note note = new Note();
-        note.type = tvNoteCategory.getText().toString();
-        note.title = title;
-        note.uid = courseUUID;
-        note.lastModifyTime = TimeUtils.getTime(System.currentTimeMillis());
-        note.content = htmlContent;
-        note.imagesDir = courseDir;
-        note.thumbNail = thumbName;
+      }
+      boolean isSuccess =
+              BitmapScaleUtil.saveBitmap(getViewBitmap(imageEditTextContent), destFile, 100);
+      if (!isSuccess) {
+        ToastUtils.systemToast(R.string.save_note_thumb_fail);
+        return;
+      }
+      Note note = new Note();
+      note.type = tvNoteCategory.getText().toString();
+      note.title = title;
+      note.uid = courseUUID;
+      note.lastModifyTime = TimeUtils.getTime(System.currentTimeMillis());
+      note.content = htmlContent;
+      note.imagesDir = courseDir;
+      note.thumbNail = thumbName;
 
-        StudyApp.instance().getDaoSession().getNoteDao().insertOrReplace(note);
-        deleteUnusedImages(note);
+      StudyApp.instance().getDaoSession().getNoteDao().insertOrReplace(note);
+      deleteUnusedImages(note);
 
-        EventBusUtils.post(new LocalNoteListChangedEvent());
-        finish();
-        break;
-      case R2.id.bt_more:
-        DialogPlus dialog = DialogPlus.newDialog(this)
-            .setAdapter(new InsertImageDialogAdapter(getApplicationContext()))
-            .setOnItemClickListener(new OnItemClickListener() {
-              @Override
-              public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
-                switch (position) {
-                  case 0:
-                    dialog.dismiss();
-                    openAlbum();
-                    break;
-                  case 1:
-                    dialog.dismiss();
-                    openCamera();
-                    break;
+      EventBusUtils.post(new LocalNoteListChangedEvent());
+      finish();
+
+    } else if (i == R.id.bt_more) {
+      DialogPlus dialog = DialogPlus.newDialog(this)
+              .setAdapter(new InsertImageDialogAdapter(getApplicationContext()))
+              .setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                  switch (position) {
+                    case 0:
+                      dialog.dismiss();
+                      openAlbum();
+                      break;
+                    case 1:
+                      dialog.dismiss();
+                      openCamera();
+                      break;
+                  }
+
                 }
+              })
+              .setExpanded(true) // This will enable the expand feature, (similar to android L share
+              // dialog)
+              .create();
+      dialog.show();
 
-              }
-            })
-            .setExpanded(true) // This will enable the expand feature, (similar to android L share
-                               // dialog)
-            .create();
-        dialog.show();
 
-        break;
-      case R2.id.tv_note_category:
-        noteTypePop.showAsDropDown(title_bar);
-        break;
+    } else if (i == R.id.tv_note_category) {
+      noteTypePop.showAsDropDown(title_bar);
+
     }
   }
 

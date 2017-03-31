@@ -46,7 +46,7 @@ public class HomeActivity extends BaseAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.annote_activity_home);
         ButterKnife.bind(this);
         //ToastUtils.systemToast("tinker patch applied test!");
 

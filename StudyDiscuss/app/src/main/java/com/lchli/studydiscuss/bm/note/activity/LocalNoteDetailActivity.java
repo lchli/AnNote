@@ -124,14 +124,14 @@ public class LocalNoteDetailActivity extends BaseAppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R2.id.action_edit_note:
-                EditNoteActivity.startSelf(this, note);
-                finish();
-                break;
-            case android.R.id.home:
-                finish();
-                break;
+        int i = item.getItemId();
+        if (i == R.id.action_edit_note) {
+            EditNoteActivity.startSelf(this, note);
+            finish();
+
+        } else if (i == android.R.id.home) {
+            finish();
+
         }
         return super.onOptionsItemSelected(item);
     }

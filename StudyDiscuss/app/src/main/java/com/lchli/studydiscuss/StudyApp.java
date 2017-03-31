@@ -2,11 +2,8 @@ package com.lchli.studydiscuss;
 
 import android.app.Application;
 
-import com.apkfuns.logutils.LogUtils;
-import com.lchli.studydiscuss.bm.config.AppEnvironmentFactory;
 import com.lchli.studydiscuss.bm.note.entity.DaoMaster;
 import com.lchli.studydiscuss.bm.note.entity.DaoSession;
-
 import com.lchli.studydiscuss.common.utils.ContextProvider;
 import com.lchli.studydiscuss.common.utils.ProcessUtil;
 
@@ -36,7 +33,7 @@ public class StudyApp {
 
     public void onCreate(Application application) {
 
-        LogUtils.configAllowLog = AppEnvironmentFactory.getEnv().logFlag();
+        //LogUtils.configAllowLog = AppEnvironmentFactory.getEnv().logFlag();
 
         mApplication = application;
         ContextProvider.initContext(application);
